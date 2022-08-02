@@ -57,10 +57,11 @@ class Loss(object):
         :returns: Dictionary of statistics about the loss
         """
         percentiles = np.percentile(loss_array, [10, 50, 90]).astype(int)
-        loss_summary = {'minimum': np.min(loss_array).astype(int),
-                        'tenth_percentile': percentiles[0],
-                        'mode': scipy.stats.mode(loss_array)[0][0].astype(int),
-                        'median': percentiles[1],
-                        'ninetieth_percentile': percentiles[2],
-                        'maximum': np.max(loss_array).astype(int)}
-        return loss_summary
+        return {
+            'minimum': np.min(loss_array).astype(int),
+            'tenth_percentile': percentiles[0],
+            'mode': scipy.stats.mode(loss_array)[0][0].astype(int),
+            'median': percentiles[1],
+            'ninetieth_percentile': percentiles[2],
+            'maximum': np.max(loss_array).astype(int),
+        }

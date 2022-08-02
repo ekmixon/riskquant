@@ -58,8 +58,11 @@ class MultiLoss(object):
         :returns: None. If display=False, returns the matplotlib axis array
                   (for customization)."""
 
-        losses = np.array([np.percentile(self.simulate_years(n), x) for x in range(1, 100, 1)])
-        percentiles = np.array([float(100 - x) / 100.0 for x in range(1, 100, 1)])
+        losses = np.array(
+            [np.percentile(self.simulate_years(n), x) for x in range(1, 100)]
+        )
+
+        percentiles = np.array([float(100 - x) / 100.0 for x in range(1, 100)])
         _ = plt.figure()
         ax = plt.gca()
         ax.plot(losses, percentiles)
@@ -73,7 +76,7 @@ class MultiLoss(object):
         ax.yaxis.set_major_formatter(ytick)
         plt.grid(which='both')
         if savefile:
-            sys.stderr.write("Saving plot to {}\n".format(savefile))
+            sys.stderr.write(f"Saving plot to {savefile}\n")
             plt.savefig(savefile)
         else:
             plt.show()

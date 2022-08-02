@@ -24,7 +24,7 @@ class TestRiskquant(unittest.TestCase):
 
     def test_csv_to_simpleloss(self):
         csvdata = "L1,loss1,0.1,1,10\n" \
-                  "L2,loss2,0.2,1,10"
+                      "L2,loss2,0.2,1,10"
         expected = [('L1', 'loss1', 0.1, 1, 10),  # name, p, low_loss, high_loss
                     ('L2', 'loss2', 0.2, 1, 10)]
 

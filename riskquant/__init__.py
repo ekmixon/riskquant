@@ -1,5 +1,6 @@
 """Risk quantification library. Import models in this package as needed."""
 
+
 #   Copyright 2019-2020 Netflix, Inc.
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,7 +27,7 @@ from riskquant import simpleloss
 __appname__ = 'riskquant'
 __version__ = '1.0.4'
 
-NAME_VERSION = '%s %s' % (__appname__, __version__)
+NAME_VERSION = f'{__appname__} {__version__}'
 
 
 def csv_to_simpleloss(file):
@@ -75,28 +76,20 @@ def main(args=None):
                         years=100000,
                         sigdigs=3)
 
-    if args:
-        args = parser.parse_args(args)
-    else:
-        args = parser.parse_args()
-
-    if args.file:
-        loss_list = csv_to_simpleloss(args.file)
-    else:
-        loss_list = None
-
+    args = parser.parse_args(args) if args else parser.parse_args()
+    loss_list = csv_to_simpleloss(args.file) if args.file else None
     m = multiloss.MultiLoss(loss_list)
     priorities = m.prioritized_losses()
     if args.file:
         path, ext = os.path.splitext(args.file)
-        output = path + '_prioritized' + ext
-        sys.stderr.write("Writing prioritized threats to:\n{}\n".format(output))
+        output = f'{path}_prioritized{ext}'
+        sys.stderr.write(f"Writing prioritized threats to:\n{output}\n")
         with open(output, 'w') as csvfile:
             writer = csv.writer(csvfile, quoting=csv.QUOTE_MINIMAL)
             for label, name, annualized_loss in priorities:
                 writer.writerow([label, name, _sigdigs(annualized_loss, args.sigdigs)])
         if args.plot:
-            m.loss_exceedance_curve(args.years, savefile=path + '.png')
+            m.loss_exceedance_curve(args.years, savefile=f'{path}.png')
     else:
         print("\n".join([str(x) for x in priorities]))
         if args.plot:
